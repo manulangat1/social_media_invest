@@ -1,4 +1,9 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { AppConfigService } from '../app-config/app-config.service';
 import { LoginUserDTO } from './dto/login.user.dto';
 import { CreateUserDTO } from './dto/create.user.dto';
@@ -16,12 +21,16 @@ import { getTime } from '../common/utils/getTime';
 
 @Injectable()
 export class AuthService {
+  private lockedOutPeriod;
+  private readonly logger = new Logger('auth');
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     private configService: AppConfigService,
     private jwtService: JwtService,
     private loginCounterService: LoginCounterService,
-  ) {}
+  ) {
+    this.lockedOutPeriod = this.configService.lockedOutPeriod;
+  }
 
   async login(dto: LoginUserDTO): Promise<LoginResponseDTO> {
     const user = await this.getUserByEmail(dto.email);
@@ -34,10 +43,9 @@ export class AuthService {
 
     const lockedUser = await this.loginCounterService.checkIfLocked(user.id);
 
-    console.log(lockedUser, 'my locked user', user.loginCounter, 'here');
     if (user.loginCounter.locked) {
       const minutes = getTime(user.loginCounter.lockedAt);
-      if (minutes > 5) {
+      if (minutes > this.lockedOutPeriod) {
         lockedUser.locked = false;
         lockedUser.lockedAt = null;
         lockedUser.failedLoginAttempts = 0;
@@ -60,7 +68,6 @@ export class AuthService {
       await this.loginCounterService.updateCounterNumber(lockedUser);
       throw new BadRequestException('Credentials are incorrect');
     }
-    // generate jwt
     const payload = { user };
 
     const token = await this.jwtService.signAsync(payload);
@@ -75,6 +82,10 @@ export class AuthService {
     lockedUser.lockedAt = null;
     lockedUser.locked = false;
     await this.loginCounterService.updateCounterNumber(lockedUser);
+    this.logger.log(
+      `User logged in successfully with email ${user.email} at ${user.password}`,
+    );
+
     return data;
   }
   async getUserByEmail(email: string): Promise<User> {
@@ -94,7 +105,10 @@ export class AuthService {
     if (userExists) {
       throw new BadRequestException('Account already exists in our systems');
     }
-
+    const usernameExists = await this.checkUserByUsername(otherDTO.username);
+    if (usernameExists) {
+      throw new BadRequestException('Account credentials exist');
+    }
     const hash = await argon2.hash(password);
 
     const user = await this.userRepository.create({
@@ -106,8 +120,11 @@ export class AuthService {
     return plainToClass(BaseUserDTO, user);
   }
 
-  // implement locking user behaviour
-  // async lockUser() {
-
-  // }
+  async checkUserByUsername(username: string): Promise<User> {
+    return await this.userRepository.findOne({
+      where: {
+        username: username,
+      },
+    });
+  }
 }

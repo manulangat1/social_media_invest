@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { connectionSource } from '../ormconfig';
 import { LoginCounterModule } from './login-counter/login-counter.module';
+import { LogginModule } from './loggin/loggin.module';
 
 @Module({
   controllers: [AppController],
@@ -17,6 +18,7 @@ import { LoginCounterModule } from './login-counter/login-counter.module';
     AppConfigModule,
     AuthModule,
     LoginCounterModule,
+    LogginModule,
   ],
 })
 export class AppModule {}
