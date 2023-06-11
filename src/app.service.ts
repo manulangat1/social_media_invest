@@ -6,7 +6,7 @@ export class AppService {
   constructor(private appConfigService: AppConfigService) {}
   getHello(): string {
     // console.log(this.configService.getDbUrl());
-    console.log(this.appConfigService.getBackendUrl());
+    console.log(this.appConfigService.BackendUrl);
     return 'Hello World!';
   }
 }

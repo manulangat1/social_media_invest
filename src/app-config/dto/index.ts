@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class EnvironmentDTO {
   @IsNotEmpty()
@@ -8,4 +8,8 @@ export class EnvironmentDTO {
   @IsNotEmpty()
   @IsString()
   env: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  lockedOutPeriod: number;
 }
