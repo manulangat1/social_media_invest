@@ -13,7 +13,7 @@ import { AuthGuard } from '../common/guards/auth.guard';
     JwtModule.register({
       global: true,
       secret: 'hi_there',
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '60h' },
     }),
   ],
   providers: [
@@ -24,5 +24,6 @@ import { AuthGuard } from '../common/guards/auth.guard';
     },
   ],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}

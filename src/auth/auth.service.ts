@@ -14,7 +14,12 @@ import { Repository } from 'typeorm';
 import * as argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { BaseUserDTO } from './dto';
-import { instanceToPlain, plainToClass } from 'class-transformer';
+import {
+  classToPlain,
+  instanceToPlain,
+  plainToClass,
+  plainToClassFromExist,
+} from 'class-transformer';
 import { LoginResponseDTO } from './dto/login.response.dto';
 import { LoginCounterService } from '../login-counter/login-counter.service';
 import { getTime } from '../common/utils/getTime';
@@ -126,5 +131,13 @@ export class AuthService {
         username: username,
       },
     });
+  }
+
+  async profile(user: any): Promise<any> {
+    // console.log(user);
+    // return plainToClassFromExist(BaseUserDTO, user);
+    const plainUser = plainToClass(BaseUserDTO, user);
+    console.log(user);
+    return plainUser;
   }
 }

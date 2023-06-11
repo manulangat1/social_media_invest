@@ -10,6 +10,8 @@ import { AuthService } from './auth.service';
 import { LoginUserDTO } from './dto/login.user.dto';
 import { CreateUserDTO } from './dto/create.user.dto';
 import { Public } from '../common/decorators/public.decorator';
+import { CurrentUser } from '../common/decorators';
+import { BaseUserDTO } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -25,7 +27,13 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() dto: CreateUserDTO) {
-    console.log(dto);
     return await this.authService.create(dto);
+  }
+
+  @Get('me')
+  // @Public()
+  @HttpCode(HttpStatus.OK)
+  async profile(@CurrentUser() user: BaseUserDTO) {
+    return this.authService.profile(user);
   }
 }

@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { User } from './src/db/entities/User.Entity';
 import { LoginCounter } from './src/db/entities/LoginCounter.Entity';
+import { Post } from './src/db/entities/Post.Entity';
 
 // export const connectionSource = new DataSource({
 //   type: 'postgres',
@@ -40,7 +41,7 @@ export const connectionSource: TypeOrmModuleOptions = {
   name: 'default',
   synchronize: true,
   logging: true,
-  entities: [User, LoginCounter],
+  entities: [User, LoginCounter, Post],
   // /src/db/entities/User.Entity.ts
   url: process.env.DB_URL,
   migrations: ['src/db/migrations/'],

@@ -3,11 +3,13 @@ import {
   CreateDateColumn,
   Entity,
   Generated,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { LoginCounter } from './LoginCounter.Entity';
+import { Post } from './Post.Entity';
 
 @Entity()
 export class User {
@@ -43,4 +45,8 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  // one to many rlship to a post  entity
+  @OneToMany(() => Post, (post) => post.owner)
+  posts: Post[];
 }
