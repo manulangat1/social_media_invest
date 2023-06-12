@@ -18,5 +18,24 @@ pipeline {
                 }
             }
         }
+
+        stage("Build the docker images via docker compose "){ 
+            steps {
+                script{
+                    echo "docker-compose"
+                }
+            }
+        }
+
+        stage ("Deploy to staging image") { 
+            expression {
+                when BRANCH_NAME= 'staging'
+            }
+            steps {
+                script{
+                    echo "To staging enironment"
+                }
+            }
+        }
     }
 }
