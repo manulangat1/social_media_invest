@@ -14,7 +14,24 @@ pipeline {
         stage ("Get the package version and bump it"){
             steps { 
                 script{
-                    echo "Hello world"
+                    sh "echo This gets the current version and bumps it"
+
+                    def packageJson = readJSON file: 'package.json'
+                    def currentVersion = packageJson.version
+                    echo "Current version: ${currentVersion}"
+
+                    echo "$BUILD_NUMBER"
+
+                    def newVersion = incrementVersion(currentVersion)
+                    echo "New version: $newVersion"
+                    env.IMAGE_TAG = "$newVersion-$BUILD_NUMBER"
+                    env.NEW_V = newVersion
+
+                    echo "NEW_V : $NEW_V"
+                    packageJson.version = NEW_V
+                    echo "$newVersion"
+                    // writeJSON file: 'package.json', json: packageJson
+                    writeFile file: 'package.json', text: groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(packageJson))
                 }
             }
         }
