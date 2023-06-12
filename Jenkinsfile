@@ -4,14 +4,17 @@ pipeline {
     stages {
         stage("Init") { 
             steps{ 
-                sh "This is the init stage"
+                script{ 
+                    echo "This is the init stage"
+                }
+                
             }
         }
 
         stage ("Get the package version and bump it"){
             steps { 
                 script{
-                    sh "Hello world"
+                    echo "Hello world"
                 }
             }
         }
