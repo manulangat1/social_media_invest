@@ -28,10 +28,11 @@ pipeline {
         }
 
         stage ("Deploy to staging image") { 
-            expression {
+            
+            steps {
+                expression {
                 when BRANCH_NAME= 'staging'
             }
-            steps {
                 script{
                     echo "To staging enironment"
                 }
