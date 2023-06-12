@@ -41,20 +41,21 @@ pipeline {
                 script{
                     echo "docker-compose"
                     sh "docker build . -t mau:${IMAGE_TAG}"
-                    sh "docker ps"
-                }
-            }
-        }
-
-        stage("Run tests ") { 
-            steps { 
-                script{ 
                     sh "docker run -d -p 3000:3000 --name my-app-container mau${IMAGE_TAG}"
                     sh "docker ps"
-
                 }
             }
         }
+
+        // stage("Run tests ") { 
+        //     steps { 
+        //         script{ 
+        //             sh "docker run -d -p 3000:3000 --name my-app-container mau${IMAGE_TAG}"
+        //             sh "docker ps"
+
+        //         }
+        //     }
+        // }
         stage ("Deploy to staging image") { 
             
             steps {
