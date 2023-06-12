@@ -1,4 +1,4 @@
-FROM node:18-alphine
+FROM node:18-alpine
 
 ENV description = This is a pipeline for the  social media cum online funndraising platform 
 
