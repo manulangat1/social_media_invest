@@ -76,7 +76,7 @@ pipeline {
                     // sh "docker stop my-app-container" 
                     sh "docker stop my-app-container-1" 
                     sh " docker container prune -f"
-                    sh " docker rm my-app-container my-app-container-1"
+                    // sh " docker rm my-app-container my-app-container-1"
                     sh "docker system prune -a -f --volumes"
                 }
             }
