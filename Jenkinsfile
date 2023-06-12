@@ -52,6 +52,7 @@ pipeline {
                 script{ 
                     sh "docker ps"
                     sh "docker run -d -p 3000:3000 --name my-app-container-1 mau:${IMAGE_TAG}"
+                    // sh "docker exec my-app-container-1 npm run test:e2e"
                     sh "docker ps"
 
                 }
@@ -72,8 +73,10 @@ pipeline {
         stage ("Delete docker caches and stop running container"){
             steps { 
                 script{
-                    sh "docker stop my-app-container" 
+                    // sh "docker stop my-app-container" 
                     sh "docker stop my-app-container-1" 
+                    sh " docker container prune -f"
+                    sh " docker rm my-app-container my-app-container-1"
                     sh "docker system prune -a -f --volumes"
                 }
             }

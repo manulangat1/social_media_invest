@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Post as PostEntity } from '../db/entities/Post.Entity';
@@ -20,6 +21,8 @@ import { GetPostDTO } from './dto/get.posts.dto';
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { BaseCommentDTO } from '../comments/dto';
 import { CommentsService } from '../comments/comments.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { uploadToDisk } from '../common/utils/upload.disk';
 
 // @ApiProperty('products')
 @ApiTags('Posts')
@@ -40,16 +43,22 @@ export class PostsController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(FileInterceptor('homeImage'))
   async create(
     @CurrentUser() user: User,
     @Body() dto: CreatePostDTO,
-    // @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<PostEntity[]> {
-    // console.log(file);
+    const newFile = await uploadToDisk(file);
+    const f = newFile['uniqueName'];
+
     const data = {
       owner: user,
+      homeImage: f,
+      f,
       ...dto,
     };
+
     return this.postService.create(data);
   }
 
