@@ -1,5 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
 import { IsDate, IsString } from 'class-validator';
+import { BaseCommentDTO } from '../../comments/dto';
 
 export class GetPostDTO {
   @IsString()
@@ -28,4 +29,7 @@ export class GetPostDTO {
   @Exclude()
   @IsDate()
   updatedAt: string;
+
+  @Expose()
+  comments: BaseCommentDTO[];
 }

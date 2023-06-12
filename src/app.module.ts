@@ -10,6 +10,7 @@ import { connectionSource } from '../ormconfig';
 import { LoginCounterModule } from './login-counter/login-counter.module';
 import { LogginModule } from './loggin/loggin.module';
 import { PostsModule } from './posts/posts.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   controllers: [AppController],
@@ -21,6 +22,7 @@ import { PostsModule } from './posts/posts.module';
     LoginCounterModule,
     LogginModule,
     PostsModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}

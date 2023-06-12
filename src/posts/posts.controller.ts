@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  UploadedFile,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Post as PostEntity } from '../db/entities/Post.Entity';
@@ -17,12 +18,17 @@ import { Public } from '../common/decorators/public.decorator';
 import { CreatePostDTO } from './dto/create.post.dto';
 import { GetPostDTO } from './dto/get.posts.dto';
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
+import { BaseCommentDTO } from '../comments/dto';
+import { CommentsService } from '../comments/comments.service';
 
 // @ApiProperty('products')
 @ApiTags('Posts')
 @Controller('posts')
 export class PostsController {
-  constructor(private postService: PostsService) {}
+  constructor(
+    private postService: PostsService,
+    private commentService: CommentsService,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -37,7 +43,9 @@ export class PostsController {
   async create(
     @CurrentUser() user: User,
     @Body() dto: CreatePostDTO,
+    // @UploadedFile() file: Express.Multer.File,
   ): Promise<PostEntity[]> {
+    // console.log(file);
     const data = {
       owner: user,
       ...dto,
@@ -68,5 +76,17 @@ export class PostsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async delete(@Param('id') id: string, @CurrentUser() user: User) {
     return this.postService.delete(id, user);
+  }
+
+  @Post(':id/comments')
+  @HttpCode(HttpStatus.CREATED)
+  async createComment(@Param('id') id: string, @Body() dto: BaseCommentDTO) {
+    const post = await this.postService.getByIdPlain(id);
+
+    const data = {
+      post: post,
+      ...dto,
+    };
+    return this.commentService.create(data);
   }
 }

@@ -5,10 +5,12 @@ import {
   Generated,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './User.Entity';
+import { Comment } from './Comments.Entity';
 
 @Entity()
 export class Post {
@@ -38,4 +40,8 @@ export class Post {
   @ManyToOne(() => User, (user) => user.posts)
   @JoinColumn()
   owner: User;
+
+  //One to many relationship to the comments entity
+  @OneToMany(() => Comment, (comment) => comment.post)
+  comments: Comment[];
 }

@@ -37,8 +37,21 @@ export class PostsService {
       where: {
         pkid: id,
       },
+      relations: ['comments'],
     });
     return plainToInstance(GetPostDTO, post);
+    // return post;
+  }
+
+  async getByIdPlain(id: string): Promise<Post> {
+    const post = await this.postRepository.findOne({
+      where: {
+        pkid: id,
+      },
+      // relations: ['comments'],
+    });
+    // return plainToInstance(GetPostDTO, post);
+    return post;
   }
 
   async update(id: string, user: User, data: any): Promise<GetPostDTO> {
