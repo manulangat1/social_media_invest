@@ -67,6 +67,15 @@ pipeline {
                 }
             }
         }
+
+        stage ("Delete docker caches and stop running container"){
+            steps { 
+                script{
+                    sh "docker stop my-app-container" 
+                    sh "docker system prune -a -f --volumes"
+                }
+            }
+        }
     }
 }
 
