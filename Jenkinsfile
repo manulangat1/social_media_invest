@@ -40,6 +40,8 @@ pipeline {
             steps {
                 script{
                     echo "docker-compose"
+                    sh "docker build . -t mau:${IMAGE_TAG}"
+                    sh "docker ps"
                 }
             }
         }
