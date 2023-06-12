@@ -50,7 +50,8 @@ pipeline {
         stage("Run tests ") { 
             steps { 
                 script{ 
-                    sh "docker run -d -p 3000:3000 --name my-app-container mau:${IMAGE_TAG}"
+                    sh "docker ps"
+                    sh "docker run -d -p 3000:3000 --name my-app-container-1 mau:${IMAGE_TAG}"
                     sh "docker ps"
 
                 }
@@ -72,6 +73,7 @@ pipeline {
             steps { 
                 script{
                     sh "docker stop my-app-container" 
+                    sh "docker stop my-app-container-1" 
                     sh "docker system prune -a -f --volumes"
                 }
             }
