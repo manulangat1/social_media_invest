@@ -34,7 +34,7 @@ pipeline {
                 when BRANCH_NAME= 'staging'
             }
                 script{
-                    echo "To staging enironment"
+                    echo "To staging enironment and fix "
                 }
             }
         }
