@@ -59,3 +59,15 @@ pipeline {
         }
     }
 }
+
+
+def incrementVersion(version) {
+    // Split the version string into its major, minor, and patch components
+    def (major, minor, patch) = version.split(/\./).collect { it.toInteger() }
+
+    // Increment the appropriate component
+    patch += 1
+
+    // Build and return the new version string
+    return "${major}.${minor}.${patch}"
+}
