@@ -41,7 +41,7 @@ export class PostsService {
       where: {
         pkid: id,
       },
-      relations: ['comments'],
+      relations: ['comments', 'donations'],
     });
     return plainToInstance(GetPostDTO, post);
     // return post;

@@ -23,6 +23,8 @@ import { BaseCommentDTO } from '../comments/dto';
 import { CommentsService } from '../comments/comments.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { uploadToDisk } from '../common/utils/upload.disk';
+import { CreateDonationDTO } from '../donations/dto/create.donation.dto';
+import { DonationsService } from '../donations/donations.service';
 
 // @ApiProperty('products')
 @ApiTags('Posts')
@@ -31,6 +33,7 @@ export class PostsController {
   constructor(
     private postService: PostsService,
     private commentService: CommentsService,
+    private donationService: DonationsService,
   ) {}
 
   @Get()
@@ -97,5 +100,20 @@ export class PostsController {
       ...dto,
     };
     return this.commentService.create(data);
+  }
+
+  @Post(':id/donations')
+  @HttpCode(HttpStatus.CREATED)
+  async createDonation(
+    @Param('id') id: string,
+    @Body() dto: CreateDonationDTO,
+  ) {
+    const post = await this.postService.getByIdPlain(id);
+    console.log(post);
+    const data = {
+      ...dto,
+      post,
+    };
+    return await this.donationService.create(data);
   }
 }

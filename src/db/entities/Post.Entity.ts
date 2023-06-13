@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { User } from './User.Entity';
 import { Comment } from './Comments.Entity';
+import { Donation } from './Donation.Entity';
 
 @Entity()
 export class Post {
@@ -44,4 +45,7 @@ export class Post {
   //One to many relationship to the comments entity
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
+
+  @OneToMany(() => Donation, (donation) => donation.post)
+  donations: Donation[];
 }

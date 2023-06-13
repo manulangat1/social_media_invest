@@ -11,6 +11,7 @@ import { LoginCounterModule } from './login-counter/login-counter.module';
 import { LogginModule } from './loggin/loggin.module';
 import { PostsModule } from './posts/posts.module';
 import { CommentsModule } from './comments/comments.module';
+import { DonationsModule } from './donations/donations.module';
 
 @Module({
   controllers: [AppController],
@@ -23,6 +24,7 @@ import { CommentsModule } from './comments/comments.module';
     LogginModule,
     PostsModule,
     CommentsModule,
+    DonationsModule,
   ],
 })
 export class AppModule {}
