@@ -20,9 +20,6 @@ export class PostsService {
       ...data,
       homeImage: data.f,
       owner: data.owner,
-      // title: data.title,
-      // detail: data.detail,
-      // homeImage: data.f,
     });
     console.log(data.owner, 'my owner');
     return await this.postRepository.save(newPost);

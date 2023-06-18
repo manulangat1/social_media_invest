@@ -70,6 +70,17 @@ pipeline {
             }
         }
 
+        stage("Infrastructure provinsioning"){
+            steps {
+                script {
+                    echo "Moving into the terraform config folder"
+                    dir("terraform_config"){
+                        sh "ls"
+                    }
+                }
+            }
+        }
+
         stage ("Delete docker caches and stop running container"){
             steps { 
                 script{

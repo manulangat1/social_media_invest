@@ -121,6 +121,11 @@ export class AuthService {
       ...otherDTO,
     });
     await this.userRepository.save(user);
+    const data = {
+      user,
+      failedLoginAttempts: 0,
+    };
+    await this.loginCounterService.create(data);
     // send an email using sendgrid
     return plainToClass(BaseUserDTO, user);
   }

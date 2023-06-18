@@ -12,10 +12,19 @@ import { LogginModule } from './loggin/loggin.module';
 import { PostsModule } from './posts/posts.module';
 import { CommentsModule } from './comments/comments.module';
 import { DonationsModule } from './donations/donations.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionFilter } from './common/filters/all.exception.filters';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionFilter,
+    },
+  ],
   imports: [
     TypeOrmModule.forRoot(connectionSource),
     AppConfigModule,
@@ -25,6 +34,7 @@ import { DonationsModule } from './donations/donations.module';
     PostsModule,
     CommentsModule,
     DonationsModule,
+    AdminModule,
   ],
 })
 export class AppModule {}
