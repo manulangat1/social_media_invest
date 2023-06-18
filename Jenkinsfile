@@ -70,7 +70,7 @@ pipeline {
             }
         }
 
-        stage("Infrastructure provinsioning"){
+        stage("Infrastructure provinsioning via terraform"){
             steps {
                 script {
                     echo "Moving into the terraform config folder"
