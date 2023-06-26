@@ -11,6 +11,17 @@ pipeline {
             }
         }
 
+        stage ("Delete docker caches and stop running container first step"){
+            steps { 
+                script{
+                    // sh "docker stop my-app-container" 
+                    sh "docker stop my-app-container-1" 
+                    sh " docker container prune -f"
+                    // sh " docker rm my-app-container my-app-container-1"
+                    sh "docker system prune -a -f --volumes"
+                }
+            }
+        }
         stage ("Get the package version and bump it"){
             steps { 
                 script{
