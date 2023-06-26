@@ -74,10 +74,12 @@ pipeline {
             steps {
                 script {
                     echo "Moving into the terraform config folder"
+                    env.AWS_KEY = credentials('AWS_KEY')
+                    env.AWS_SECRET = credentials('AWS_SECRET')
                     dir("terraform_config"){
                         sh "ls"
                         sh "terraform init"
-                        sh "terraform plan"
+                        sh "terraform plan --var access_key=AWS_KEY --var secret_key=AWS_SECRET"
                     }
                 }
             }

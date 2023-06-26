@@ -1,5 +1,7 @@
 provider "aws" {
-  region = "us-west-1"
+  region     = "us-west-1"
+  access_key = ""
+  secret_key = ""
 }
 
 variable "cidr_block" {
@@ -113,6 +115,7 @@ resource "aws_instance" "my-ec2-instance" {
 
   associate_public_ip_address = true
 
+  key_name =  "server-key-pair"
   tags = {
     "Name" : "Dev-api"
   }
