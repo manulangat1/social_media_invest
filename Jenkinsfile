@@ -76,6 +76,7 @@ pipeline {
                     echo "Moving into the terraform config folder"
                     dir("terraform_config"){
                         sh "ls"
+                        sh "terraform init"
                     }
                 }
             }
