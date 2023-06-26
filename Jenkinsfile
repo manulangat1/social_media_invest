@@ -77,6 +77,7 @@ pipeline {
                     dir("terraform_config"){
                         sh "ls"
                         sh "terraform init"
+                        sh "terraform plan"
                     }
                 }
             }
