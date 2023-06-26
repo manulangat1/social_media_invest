@@ -7,11 +7,14 @@ import { EnvironmentDTO } from './dto';
 export class AppConfigService {
   constructor(private configService: ConfigService<EnvironmentDTO>) {}
 
-  getBackendUrl() {
+  get BackendUrl() {
     console.log(this.configService.getOrThrow('env'));
     return process.env.DB_URL;
   }
-  getCurrentEnvironment() {
+  get CurrentEnvironment() {
     return this.configService.getOrThrow('env');
+  }
+  get lockedOutPeriod() {
+    return this.configService.getOrThrow('lockedOutPeriod');
   }
 }
